@@ -9,6 +9,7 @@ final class WatchableQueueMock implements WatchableQueue
 {
     private $items = [];
     private $process = [];
+    private $topic;
 
     public function __construct(QueueItem ...$items)
     {
@@ -74,5 +75,10 @@ final class WatchableQueueMock implements WatchableQueue
     public function isValid() : bool
     {
         return !empty($this->items);
+    }
+
+    public function setTopic(string $topic)
+    {
+        $this->topic = $topic;
     }
 }

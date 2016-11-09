@@ -77,12 +77,19 @@ final class Kernel implements MinimalKernel
             'elastic_index' => 'elife_search',
             'gearman_auto_restart' => true,
             'aws' => [
+                'credentials' => false,
+                'region' => 'us-west-2',
+            ],
+            /*
+            'aws' => [
+                'credentials' => true,
                 'mock_queue' => true,
                 'queue_name' => 'eLife-search',
                 'key' => '-----------------------',
                 'secret' => '-------------------------------',
                 'region' => '---------',
             ],
+            */
         ], $config);
         // Annotations.
         AnnotationRegistry::registerAutoloadNamespace(
@@ -273,18 +280,26 @@ final class Kernel implements MinimalKernel
         };
 
         $app['aws.sqs'] = function (Application $app) {
-            return new SqsClient([
-                'credentials' => [
-                    'key' => $app['config']['aws']['key'],
-                    'secret' => $app['config']['aws']['secret'],
-                ],
-                'version' => '2012-11-05',
-                'region' => $app['config']['aws']['region'],
-            ]);
+            if ($app['config']['aws']['credentials'] === true) {
+                return new SqsClient([
+                    'credentials' => [
+                        'key' => $app['config']['aws']['key'],
+                        'secret' => $app['config']['aws']['secret'],
+                    ],
+                    'version' => '2012-11-05',
+                    'region' => $app['config']['aws']['region'],
+                ]);
+            } else {
+                // @todo verify this is all that is required for .aws/ files.
+                return new SqsClient([
+                    'version' => '2012-11-05',
+                    'region' => $app['config']['aws']['region'],
+                ]);
+            }
         };
 
         $app['aws.queue'] = function (Application $app) {
-            return new SqsWatchableQueue($app['aws.sqs'], $app['config']['aws']['queue_name']);
+            return new SqsWatchableQueue($app['aws.sqs']);
         };
 
         $app['aws.queue_transformer'] = function (Application $app) {

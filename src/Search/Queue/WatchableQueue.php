@@ -5,6 +5,14 @@ namespace eLife\Search\Queue;
 interface WatchableQueue
 {
     /**
+     * Sets the topic for the queue.
+     *
+     * Mock: Not used at all.
+     * SQS: Evaluated to Queue URL that can be used.
+     */
+    public function setTopic(string $topic);
+
+    /**
      * Adds item to the queue.
      *
      * Mock: Add item to queue.

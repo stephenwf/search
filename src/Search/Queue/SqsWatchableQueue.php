@@ -11,10 +11,17 @@ final class SqsWatchableQueue implements WatchableQueue
     private $url;
     private $next;
 
-    public function __construct(SqsClient $client, string $name)
+    public function __construct(SqsClient $client)
     {
         $this->client = $client;
-        $this->url = $client->getQueueUrl(['QueueName' => $name])->get('QueueUrl');
+    }
+
+    /**
+     * Sets the topic for SQS.
+     */
+    public function setTopic(string $topic)
+    {
+        $this->url = $this->client->getQueueUrl(['QueueName' => $topic])->get('QueueUrl');
     }
 
     /**

@@ -13,6 +13,7 @@ return [
     'gearman_servers' => ['elife_gearman_1'],
     'gearman_auto_restart' => true,
     'aws' => [
+        'credentials' => true,
         'mock_queue' => false,
         'queue_name' => 'eLife-search',
         'key' => '-----------------------',

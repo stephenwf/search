@@ -85,9 +85,12 @@ class QueueCommand extends Command
         $maxIterations = $input->getOption('iterations');
         $memoryCheckInterval = $input->getOption('memory-interval');
         $memoryThreshold = ($input->getOption('memory')) * 1000 * 1000;
+        $topic = $input->getArgument('topic');
         // Initial values.
         $startTime = time();
         $iterations = 0;
+        // Set the topic.
+        $this->queue->setTopic($topic);
         // Loop.
         while (true) {
             ++$iterations;
