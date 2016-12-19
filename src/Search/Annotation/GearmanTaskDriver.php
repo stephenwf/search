@@ -65,9 +65,8 @@ final class GearmanTaskDriver
         }
     }
 
-    public function addTaskToWorker(GearmanTaskInstance $task, GearmanWorker $worker, LoggerInterface $logger)
-    {
-        $worker->addFunction($task->name, Closure::bind(function (GearmanJob $job) use ($task, $logger) {
+    public function createJob(GearmanTaskInstance $task, LoggerInterface $logger) {
+        return Closure::bind(function (GearmanJob $job) use ($task, $logger) {
             $data = $task->deserialize($job->workload());
             $object = $task->instance;
             $method = $task->method;
@@ -96,7 +95,12 @@ final class GearmanTaskDriver
             }
 
             return GEARMAN_SUCCESS;
-        }, $this));
+        }, $this);
+    }
+
+    public function addTaskToWorker(GearmanTaskInstance $task, GearmanWorker $worker, LoggerInterface $logger)
+    {
+        $worker->addFunction($task->name, $this->createJob($task, $logger));
     }
 
     public function work(LoggerInterface $logger = null, bool $restart = false)
