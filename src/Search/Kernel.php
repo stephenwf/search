@@ -99,6 +99,7 @@ final class Kernel implements MinimalKernel
                 'key' => '-----------------------',
                 'secret' => '-------------------------------',
                 'region' => '---------',
+                'endpoint' => null,
             ], $config['aws'] ?? []),
         ], $config);
         // Annotations.
@@ -350,6 +351,7 @@ final class Kernel implements MinimalKernel
                 return new SqsClient([
                     'version' => '2012-11-05',
                     'region' => $app['config']['aws']['region'],
+                    'endpoint' => $app['config']['aws']['endpoint'],
                 ]);
             }
 
@@ -360,6 +362,7 @@ final class Kernel implements MinimalKernel
                 ],
                 'version' => '2012-11-05',
                 'region' => $app['config']['aws']['region'],
+                'endpoint' => $app['config']['aws']['endpoint'],
             ]);
         };
 
