@@ -372,8 +372,8 @@ final class Kernel implements MinimalKernel
                 'version' => '2012-11-05',
                 'region' => $app['config']['aws']['region'],
             ];
-            if (isset($app['aws']['endpoint'])) {
-                $config['endpoint'] = $app['aws']['endpoint'];
+            if (isset($app['config']['aws']['endpoint'])) {
+                $config['endpoint'] = $app['config']['aws']['endpoint'];
             }
             if (!isset($app['config']['aws']['credential_file']) || $app['config']['aws']['credential_file'] === false) {
                 $config['credentials'] = [
