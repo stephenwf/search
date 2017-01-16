@@ -382,7 +382,7 @@ final class Kernel implements MinimalKernel
                 ];
             }
 
-            return new SqsClient($endpoint);
+            return new SqsClient($config);
         };
 
         $app['aws.queue'] = function (Application $app) {
